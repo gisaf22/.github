@@ -1,24 +1,26 @@
 ---
-name: Item (full)
-about: Standard item — why it matters, how it passes, how it fails.
+name: User Story (full)
+about: Standard user story — why it matters, how it passes, how it fails.
 title: ''
 ---
 
-## Feature
+## User story
 <!-- "As <consumer>, I want <capability>, so that <outcome>."
      The consumer is a system or repo, not a person. -->
 As <consumer>, I want <capability>, so that <outcome>.
 
 ## Context
-<!-- Links to related issues, PRs, files, ADRs. -->
+<!-- Parent epic and feature, then links to related issues, PRs, files, ADRs. -->
+- Epic: #
+- Feature: #
 -
 
-## Scenarios
-<!-- One row per scenario. Scenario is Given / When / Then.
-     Tier: unit / integration / e2e / manual. Replace the example row. -->
-| # | Scenario | Why it matters | Fails if | Tier |
+## Acceptance criteria
+<!-- One row per criterion, numbered AC1, AC2, …
+     Test tier: unit / integration / e2e / manual. Replace the example row. -->
+| # | Given / When / Then | Why it matters | Fails if | Test tier |
 |---|---|---|---|---|
-| S1 | Given <state>, when <action>, then <result> | <why> | <observable failure> | unit / integration / e2e / manual |
+| AC1 | Given <state>, when <action>, then <result> | <why> | <observable failure> | unit / integration / e2e / manual |
 
 ## Edge cases
 <!-- Bullet list, each with its expected behaviour. -->
@@ -31,9 +33,9 @@ As <consumer>, I want <capability>, so that <outcome>.
 ## Observability
 <!-- What is logged or alerts on failure; "N/A because…" if none. -->
 
-## Done when
+## Definition of Done
 <!-- Mark any baseline item that does not apply as "N/A because…". -->
-- [ ] All scenarios pass
+- [ ] All acceptance criteria pass
 - [ ] Tests written first
 - [ ] CI green
 - [ ] Failure path observable
