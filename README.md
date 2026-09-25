@@ -21,9 +21,15 @@ chooser of every `gisaf22` repo that has no `.github/ISSUE_TEMPLATE/` of its own
   a decision changed · no contract change without a compatibility note. Mark any item that
   doesn't apply "N/A because…".
 - Templates are markdown, not YAML forms: agents create issues with `gh`, which skips forms.
-  Example: `gh issue create --repo gisaf22/fpl-ingest --template "User Story (full)"`.
+  Agents copy the template body to a file, fill it in, and create with `--body-file`
+  (see [AGENT_WORKFLOW.md](AGENT_WORKFLOW.md#creating-items)).
 - Templates set no labels; set the Epic and Work Item Type fields on the board per item.
 - A repo that adds its own `.github/ISSUE_TEMPLATE/` stops receiving these defaults.
+
+## Agent workflow
+
+[AGENT_WORKFLOW.md](AGENT_WORKFLOW.md) is the procedure agents follow for every FPL Platform
+board item: pick up → tests → implement → PR → close. Each repo's `CLAUDE.md` links to it.
 
 ## Facts
 
