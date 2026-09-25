@@ -4,13 +4,15 @@ Default community health files for `gisaf22` repositories.
 
 ## Issue templates
 
-`.github/ISSUE_TEMPLATE/` holds two markdown templates, offered in the "New issue"
+`.github/ISSUE_TEMPLATE/` holds four markdown templates, offered in the "New issue"
 chooser of every `gisaf22` repo that has no `.github/ISSUE_TEMPLATE/` of its own:
 
 | Template | Use for | Sections |
 |---|---|---|
 | **User Story (full)** | Any story larger than XS | User story · Context · Acceptance criteria · Edge cases · Out of scope · Observability · Definition of Done |
 | **User Story (light)** | XS stories | User story · Acceptance criteria (1–3 rows) · Out of scope · Definition of Done |
+| **Bug** | Defects | Summary · Steps to reproduce · Expected vs actual · Evidence · Acceptance criteria for the fix · Definition of Done |
+| **Task** | Non-story work: chores, config, docs, ops | Goal · Acceptance criteria (1–3 rows) · Out of scope · Definition of Done |
 
 - **User story** is "As <consumer>, I want <capability>, so that <outcome>"; the consumer is a system or repo.
 - **Context** names the parent Epic and Feature issues, then related links.
