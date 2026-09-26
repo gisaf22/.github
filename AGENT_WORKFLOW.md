@@ -10,8 +10,8 @@ repo-specific matters (test commands, branch naming, PR title style), the repo w
 procedure itself, this file wins.
 
 Board fields: **Status** (Todo · In Progress · Blocked · Done), **Work Item Type**, **Epic**,
-**Size** (XS · S · Split needed). Dependencies are GitHub's native *blocked by* / *blocking*
-issue links, not text in the body.
+**Size** (XS · S · Split needed), **Priority** (P0 Now · P1 Next · P2 Later · P3 Someday).
+Dependencies are GitHub's native *blocked by* / *blocking* issue links, not text in the body.
 
 ---
 
@@ -30,13 +30,22 @@ issue links, not text in the body.
 1. Implement each acceptance criterion as tests at its test tier.
    - Mark each test with `covers("#<issue> AC<n>")`.
    - Test names are plain English and carry no IDs; the ID lives in the marker.
-   - Write tests for the acceptance criteria only. If you think a test is missing, flag it
-     in your report; do not add it.
+   - An AC may have several test cases (boundaries, negatives, parametrized variants), all
+     marked with that AC's `covers` marker.
+   - Write tests for the acceptance criteria only. A test for behaviour no AC describes is
+     not allowed: if you think one is missing, flag it in your report; do not add it.
    - Test tier `manual` or `e2e (manual)`: no automated test. Record the result on the PR
      or issue instead (step 4).
 2. Commit the tests first, while they still fail.
 3. Stop and report for approval: which ACs the tests cover, how they fail, and any flagged
    gaps. Do not start implementing until approved.
+
+When to pause at step 3:
+
+- **Size XS, every AC manual:** skip the pause and go straight to step 3 (Implement); the
+  PR is the review point.
+- **Size S:** always pause. If every AC is manual there are no failing tests to commit, so
+  report a verification plan instead: what will change, and how each AC will be checked.
 
 ## 3. Implement
 
@@ -65,6 +74,9 @@ After the human merges:
 2. Unblock dependents: for each item the closed item was blocking, if it now has no other
    open blockers and its Status is **Blocked**, move it to **Todo**. An item that still has
    an open blocker stays Blocked.
+3. Clean up local state in every repo you worked in: remove the item's worktrees
+   (`git worktree remove <path>`) and delete its merged local branches
+   (`git branch -d <branch>`).
 
 ---
 
@@ -74,8 +86,24 @@ After the human merges:
   anything larger than XS, User Story (light) for XS.
 - Create with `--body-file`: copy the template body (without its front matter) to a file,
   fill it in, then `gh issue create --repo gisaf22/<repo> --title "…" --body-file <file>`.
-- Then set, on the board: Work Item Type, Epic, Size, Status, and the parent issue; add
-  blocked-by links where the item depends on another.
+- Then set, on the board: Work Item Type, Epic, Size, Priority, Status, and the parent
+  issue; add blocked-by links where the item depends on another.
+- **Every new item gets a Priority**, P0–P3 (each option's description on the board says
+  when it applies). At most 3 P0 items may be open at once: to add a fourth, lower one
+  first or ask.
+- **"What's next" means the highest-priority Todo item.** Among equal priorities, take the
+  one highest in the board's Todo column.
+
+Writing acceptance criteria:
+
+- **Given / When / Then, always.** Every AC names its trigger in When. For a static check
+  (a doc, a config), When is the act of inspecting it ("when the section is read").
+- **Behaviour, not mechanism.** An AC states the required behaviour, never the
+  implementation: "a misspelled marker fails collection", not "set `--strict-markers` in
+  `addopts`". An AC that prescribes a mechanism can be unmeetable while the behaviour is
+  fine (#22 AC2: `--strict-markers` in `addopts` only warns on pytest 9).
+- **Every edge case is tested.** Each entry in a spec's Edge cases section is either its
+  own AC or listed as an example under an existing AC. An edge case never stands alone.
 
 ## Public board
 
