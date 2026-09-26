@@ -10,8 +10,8 @@ repo-specific matters (test commands, branch naming, PR title style), the repo w
 procedure itself, this file wins.
 
 Board fields: **Status** (Todo · In Progress · Blocked · Done), **Work Item Type**, **Epic**,
-**Size** (XS · S · Split needed). Dependencies are GitHub's native *blocked by* / *blocking*
-issue links, not text in the body.
+**Size** (XS · S · Split needed), **Priority** (P0 Now · P1 Next · P2 Later · P3 Someday).
+Dependencies are GitHub's native *blocked by* / *blocking* issue links, not text in the body.
 
 ---
 
@@ -86,8 +86,13 @@ After the human merges:
   anything larger than XS, User Story (light) for XS.
 - Create with `--body-file`: copy the template body (without its front matter) to a file,
   fill it in, then `gh issue create --repo gisaf22/<repo> --title "…" --body-file <file>`.
-- Then set, on the board: Work Item Type, Epic, Size, Status, and the parent issue; add
-  blocked-by links where the item depends on another.
+- Then set, on the board: Work Item Type, Epic, Size, Priority, Status, and the parent
+  issue; add blocked-by links where the item depends on another.
+- **Every new item gets a Priority**, P0–P3 (each option's description on the board says
+  when it applies). At most 3 P0 items may be open at once: to add a fourth, lower one
+  first or ask.
+- **"What's next" means the highest-priority Todo item.** Among equal priorities, take the
+  one highest in the board's Todo column.
 
 Writing acceptance criteria:
 
