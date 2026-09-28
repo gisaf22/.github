@@ -15,6 +15,13 @@ As <consumer>, I want <capability>, so that <outcome>.
 - Feature: #
 -
 
+## Design decisions
+<!-- From AGENT_WORKFLOW.md step 0, written before the acceptance criteria.
+     One bullet per decision: the choice and why, with the options and evidence
+     where it was a real choice. Prefix an undecided one with "OPEN:".
+     Pickup treats every decision recorded here as settled. -->
+- **<decision>:** <choice>, because <reason>
+
 ## Acceptance criteria
 <!-- One row per criterion, numbered AC1, AC2, …
      Test tier: unit / integration / e2e / manual. Replace the example row. -->
