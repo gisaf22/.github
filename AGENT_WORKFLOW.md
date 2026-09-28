@@ -2,7 +2,8 @@
 
 The one procedure for building an item from the
 [FPL Platform board](https://github.com/users/gisaf22/projects/3), in every `gisaf22` repo.
-"Pick up #N" means: run steps 1–5 below for issue #N, in order.
+"Pick up #N" means: run steps 1–5 below for issue #N, in order. Step 0 runs
+earlier, when the story is scoped.
 
 Each repo's `CLAUDE.md` has a short "Working on board items" section that points here and
 repeats the must-follow rules. Where this file and a repo's `CLAUDE.md` disagree on
@@ -15,14 +16,44 @@ Dependencies are GitHub's native *blocked by* / *blocking* issue links, not text
 
 ---
 
+## 0. Surface design decisions
+
+Required before scoping any story, meaning before its acceptance criteria are written. ACs
+state the behaviour a decision implies, so the decision has to come first.
+
+1. List the story's open design decisions against this checklist. Include decisions the
+   spec does not mention; an omission is not a decision.
+   - **Grain and keys:** one row per what; natural or surrogate key; what makes it unique.
+   - **Which capture wins, per column:** latest, first, last before an event; how ties break.
+   - **Change over time:** Type 1 (overwrite) or Type 2 (history); what a change should do
+     (overwrite, version, or fail the build).
+   - **Which attributes belong:** what goes on this model, and what belongs at another grain
+     or in another model.
+   - **Missing and edge data:** nulls, absent or departed entities, empty inputs, first and
+     last periods, duplicates.
+   - **Placement:** layer; private or served; reuse of an existing model rather than a new one.
+   - **Controls:** fail or warn; no-shrink rules; row-count floors.
+   - **Contract impact:** does a served shape or its values change; is it additive or breaking.
+   - **Test tiers and mutations:** which tier each check runs at, and what mutation or
+     fixture proves each test can fail.
+   - **Infrastructure:** IAM, CI, secrets, inputs.
+2. For each open decision, give the options, the evidence from code or data, and a
+   recommendation.
+3. Record the decisions in the issue under **Design decisions**, placed before
+   **Acceptance criteria**. A decision the human has not yet made stays marked open there.
+
 ## 1. Pick up
 
 1. Read the item and its parent feature (`gh issue view N --repo gisaf22/<repo>`; the parent
    is in the item's sidebar and its Context section).
 2. If the item has no acceptance criteria table, stop: add the `needs-spec` label and ask.
    Do not start work.
-3. Move the item to **In Progress** on the board (commands under *Board commands*).
-4. If the work looks bigger than its Size, stop and propose a split (which new items, each
+3. Check the item against the step 0 checklist. Decisions already recorded under **Design
+   decisions** are settled; do not reopen them. Stop and ask only on a decision that is
+   new: open in the issue, or missing from it. Once answered, add it to the issue's Design
+   decisions before continuing.
+4. Move the item to **In Progress** on the board (commands under *Board commands*).
+5. If the work looks bigger than its Size, stop and propose a split (which new items, each
    with its own acceptance criteria). Do not start the larger version.
 
 ## 2. Tests
@@ -82,6 +113,7 @@ After the human merges:
 
 ## Creating items
 
+- Run step 0 (Surface design decisions) before writing the acceptance criteria.
 - Use the templates in [`gisaf22/.github`](.github/ISSUE_TEMPLATE/): User Story (full) for
   anything larger than XS, User Story (light) for XS.
 - Create with `--body-file`: copy the template body (without its front matter) to a file,
