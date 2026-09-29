@@ -68,15 +68,18 @@ state the behaviour a decision implies, so the decision has to come first.
    - Test tier `manual` or `e2e (manual)`: no automated test. Record the result on the PR
      or issue instead (step 4).
 2. Commit the tests first, while they still fail.
-3. Stop and report for approval: which ACs the tests cover, how they fail, and any flagged
-   gaps. Do not start implementing until approved.
+3. If the rules below call for a pause, stop and report for approval: which ACs the tests
+   cover, how they fail, and any flagged gaps. Do not start implementing until approved.
 
 When to pause at step 3:
 
 - **Size XS, every AC manual:** skip the pause and go straight to step 3 (Implement); the
   PR is the review point.
-- **Size S:** always pause. If every AC is manual there are no failing tests to commit, so
-  report a verification plan instead: what will change, and how each AC will be checked.
+- **Size S:** pause only if a design decision was open or new at pick-up (step 1, point 3),
+  even once the human has answered it. Otherwise skip the pause: commit the failing tests,
+  implement, and open the PR, which is the review point. When a pause applies and every AC
+  is manual, there are no failing tests to commit, so report a verification plan instead:
+  what will change, and how each AC will be checked.
 
 ## 3. Implement
 
