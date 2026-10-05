@@ -37,6 +37,10 @@ state the behaviour a decision implies, so the decision has to come first.
    - **Test tiers and mutations:** which tier each check runs at, and what mutation or
      fixture proves each test can fail.
    - **Infrastructure:** IAM, CI, secrets, inputs.
+   - **Existing solution before custom logic:** check, in this order, for a built-in dbt
+     feature, then an established package (dbt_utils, dbt_expectations, audit_helper,
+     Elementary), and only then write custom logic. Record what exists and why it was chosen
+     or rejected: fit, adapter support (e.g. DuckDB), dependency cost.
 2. For each open decision, give the options, the evidence from code or data, and a
    recommendation.
 3. Record the decisions in the issue under **Design decisions**, placed before
