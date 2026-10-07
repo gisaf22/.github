@@ -55,6 +55,21 @@ state the behaviour a decision implies, so the decision has to come first.
    **Acceptance criteria**, with the citations and contract list from points 1–2. A decision
    the human has not yet made stays marked open there.
 
+### Story splitting
+
+Split a Feature into stories that are vertical slices, not layers.
+
+- **Slice 1 is the thinnest end-to-end path that delivers usable value**, even if narrow or
+  rough: e.g. one endpoint through detect → record → notify.
+- **Later slices widen or deepen:** widen with more endpoints or cases; deepen with
+  hardening, performance or edge cases.
+- **Each slice states the value it delivers on its own.** A story that delivers nothing
+  usable alone needs a written reason.
+- **Plan contract and schema changes across the slices** so that each version bump reflects
+  a real, shipped change.
+- **After each slice merges, re-check the remaining slices** against what was learned
+  before starting the next.
+
 ## Verification: what you run, what comes to the human
 
 Run read-only checks yourself and report their results; don't hand them to the human as
