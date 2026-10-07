@@ -21,7 +21,15 @@ Dependencies are GitHub's native *blocked by* / *blocking* issue links, not text
 Required before scoping any story, meaning before its acceptance criteria are written. ACs
 state the behaviour a decision implies, so the decision has to come first.
 
-1. List the story's open design decisions against this checklist. Include decisions the
+1. Search existing issues and PRs, in every repo the story touches, for prior decisions on
+   the same topic (`gh search issues "<topic>" --owner gisaf22`, `gh search prs …`, and the
+   repo's `CLAUDE.md`). Cite each one found (`gisaf22/<repo>#N`) next to the decision it
+   settles; a prior decision is settled unless the story says why to reopen it.
+2. List every contract or schema the change touches (served models, raw contracts, JSON
+   schemas, manifests, sidecars) and how strict each is: e.g. `additionalProperties: false`,
+   enforced dbt contracts, required fields, enum values. A new field in a strict schema is a
+   breaking change for that schema.
+3. List the story's open design decisions against this checklist. Include decisions the
    spec does not mention; an omission is not a decision.
    - **Grain and keys:** one row per what; natural or surrogate key; what makes it unique.
    - **Which capture wins, per column:** latest, first, last before an event; how ties break.
@@ -41,10 +49,26 @@ state the behaviour a decision implies, so the decision has to come first.
      feature, then an established package (dbt_utils, dbt_expectations, audit_helper,
      Elementary), and only then write custom logic. Record what exists and why it was chosen
      or rejected: fit, adapter support (e.g. DuckDB), dependency cost.
-2. For each open decision, give the options, the evidence from code or data, and a
+4. For each open decision, give the options, the evidence from code or data, and a
    recommendation.
-3. Record the decisions in the issue under **Design decisions**, placed before
-   **Acceptance criteria**. A decision the human has not yet made stays marked open there.
+5. Record the decisions in the issue under **Design decisions**, placed before
+   **Acceptance criteria**, with the citations and contract list from points 1–2. A decision
+   the human has not yet made stays marked open there.
+
+## Verification: what you run, what comes to the human
+
+Run read-only checks yourself and report their results; don't hand them to the human as
+instructions. That covers `gh` queries, `grep` and reading code, reading workflow runs and
+their logs, listing or reading objects, and dry runs. Report the command and what it showed.
+
+Only hard gates come to the human:
+
+- merges;
+- live writes (to a bucket, a warehouse, a board in bulk, or any production data);
+- IAM and permission changes;
+- workflow dispatches that write (`gh workflow run` on anything that captures, builds or
+  deploys);
+- changes to a served contract.
 
 ## 1. Pick up
 
@@ -112,7 +136,12 @@ After the human merges:
 2. Unblock dependents: for each item the closed item was blocking, if it now has no other
    open blockers and its Status is **Blocked**, move it to **Todo**. An item that still has
    an open blocker stays Blocked.
-3. Clean up local state in every repo you worked in: remove the item's worktrees
+3. Post-merge checks (a scheduled run to watch, a capture to inspect, a manifest field to
+   confirm) go on the PR or issue as a Markdown checklist: what to check, when it can first
+   be checked, and how. Don't rely on session timers or reminders; the checklist is the
+   record, and any later session picks it up, runs the checks (read-only, per
+   *Verification*), ticks each item with its evidence, and closes the issue's loop.
+4. Clean up local state in every repo you worked in: remove the item's worktrees
    (`git worktree remove <path>`) and delete its merged local branches
    (`git branch -d <branch>`).
 
