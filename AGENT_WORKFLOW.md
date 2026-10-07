@@ -159,6 +159,8 @@ After the human merges:
 4. Clean up local state in every repo you worked in: remove the item's worktrees
    (`git worktree remove <path>`) and delete its merged local branches
    (`git branch -d <branch>`).
+5. If the item is a slice of a Feature, re-check the Feature's remaining slices per step 0's
+   *Story splitting* rule, and record any changes on the Feature.
 
 ---
 
