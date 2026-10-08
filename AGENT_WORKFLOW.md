@@ -4,7 +4,7 @@ The one procedure for building a work item, in every `gisaf22` repo. "Pick up #N
 stages 1–5 below for issue #N, in order. Stage 0 runs earlier, when the story is scoped, and
 stage 6 runs when a Feature closes.
 
-The core (sections 1–8) is domain-free. A **domain playbook** adds design checklist items for
+The core (sections 1–7) is domain-free. A **domain playbook** adds design checklist items for
 one kind of work; it never overrides the core. Playbooks:
 
 - [`playbooks/data-dbt.md`](playbooks/data-dbt.md) — data models, captures, dbt.
