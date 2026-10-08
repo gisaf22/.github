@@ -61,7 +61,9 @@ stop and ask (Stop).
    - **Contract impact:** does a shape or its values change for a consumer; additive or
      breaking.
    - **Failure visibility:** how a failure of this change shows up, to whom, and whether it
-     fails closed or loud. "Nobody would notice" is an open decision.
+     fails closed or loud. "Nobody would notice" is an open decision. Include the change
+     being silently switched off: a missing or default config value that skips a check is a
+     failure, not a valid "off" state.
    - **Test tiers and mutations:** which tier each check runs at, and what mutation or
      fixture proves each test can fail.
    - **Infrastructure:** permissions, CI, secrets, inputs.
