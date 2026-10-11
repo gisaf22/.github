@@ -29,6 +29,8 @@ fields, board commands and other FPL Platform specifics are in the
 - **Fail closed or fail loud.** A failure either stops the work safely or is visible to
   someone who will act on it; never silent.
 - **One source of truth per fact.** A fact lives in one place and others link to it.
+- **Docs ride with code.** A docs change lands in the PR whose code it describes; there are
+  no docs-only PRs. The one exception is a retro's rule changes (stage 6).
 - **Built-in or package before custom.** Use what the platform or an established package
   already does before writing custom logic.
 - **Stay inside Out of scope; ask, don't improvise.** A wrong or ambiguous spec is a stop.
@@ -70,8 +72,14 @@ stop and ask (Stop).
    - **Existing solution before custom logic:** check for a built-in feature, then an
      established package, and only then write custom logic. Record what exists and why it
      was chosen or rejected (fit, platform support, dependency cost).
+   - **Terms and targets:** every term or target the story checks against or cites is
+     defined in one place on the board or in the repo's glossary, with its full definition,
+     before anything is checked against it or cites it. For a target such as an SLO, the
+     definition covers the measure, the threshold, the maximum age, which periods count and
+     when counting starts.
 4. For each open decision, give the options, the evidence from code or data, and a
-   recommendation.
+   recommendation. **A measurement cited as evidence carries the query or command that
+   produced it**, inline or linked, so it can be rerun without asking.
 5. Record the decisions in the issue under **Design decisions**, before **Acceptance
    criteria**, with the citations and contract list from points 1–2. **Each decision also
    records the options rejected and why.** A decision the human has not yet made stays
@@ -94,6 +102,10 @@ Split a Feature into stories that are vertical slices, not layers.
   a real, shipped change.
 - **After each slice merges, re-check the remaining slices** against what was learned
   before starting the next.
+- **Every Feature names a done-proof consumer query:** one query, written as the consumer
+  would run it against the published output, whose result proves the Feature works end to
+  end. It is a `manual` AC on the item that first publishes, run live after that first
+  publish, with the query and its result recorded on the Feature.
 
 ### Stage 1. Pick up
 
@@ -143,6 +155,17 @@ Split a Feature into stories that are vertical slices, not layers.
 1. Make the tests pass.
 2. Stay inside the item's Out of scope. Anything listed there belongs to another item.
 3. If the spec is wrong or ambiguous, stop and ask. Do not improvise around it.
+4. **Commit the implementation before mutation testing.** Revert each mutation with
+   `git restore` against that commit, and confirm a clean tree after each. Never run a
+   checkout or restore while implementation work is uncommitted: it resets the file to the
+   failing-tests commit, and later mutation results run against the old code.
+5. **Edit the governing record when a decision changes.** A change to a decision an ADR
+   states edits that ADR in the same PR; "already recorded" is valid only if the PR quotes
+   the ADR line. An item that supersedes a decision on its Feature records the supersession
+   on the Feature, against that decision's line.
+6. **Report a process slip when it happens**, in the next report: what slipped, what it
+   affected, and how it was put right. An unreported slip cannot be prevented the second
+   time.
 
 **Exit:** all automated tests pass.
 **Stop:** spec wrong or ambiguous; the work needs something Out of scope.
@@ -151,7 +174,10 @@ Split a Feature into stories that are vertical slices, not layers.
 
 **Entry:** stage 3 exited.
 
-1. Title per the repo's convention (its `CLAUDE.md` and recent PRs).
+1. Title per the repo's convention (its `CLAUDE.md` and recent PRs). The body follows the
+   [PR template](.github/pull_request_template.md), including its **Merge danger** section:
+   one-way or two-way door, when a one-way door closes (at merge or at a later event such as
+   the first publish), and the blast radius at merge and later.
 2. Body says `Closes #N`. For an item in another repo, use `Closes gisaf22/<repo>#N`. When
    one item spans several PRs, only the PR expected to merge last says `Closes`; the others
    say `Part of gisaf22/<repo>#N`.
@@ -159,6 +185,8 @@ Split a Feature into stories that are vertical slices, not layers.
    command and its result, a link). Proposed ACs are listed separately as proposed.
 4. Tick the Definition of Done in the PR body. Mark any item that doesn't apply
    "N/A because…".
+   - **A finding the PR defers links an issue before merge.** "Found, not fixed here" with no
+     issue is a finding nobody owns.
 5. **Stacked PRs.** When PRs build on each other, each PR's base is the PR below it and its
    body names the stack in merge order. The stack gets **one verification for the stack**:
    the checks and AC evidence run once against the top branch and are posted on the top PR;
@@ -183,6 +211,12 @@ Split a Feature into stories that are vertical slices, not layers.
    ticks each item with its evidence, and closes the loop.
    - **Too early to check:** report it in one line — what, and the earliest time it can be
      checked (absolute, with time zone). Don't wait, poll, or set timers.
+   - **Live checks run clean and complete.** Select only the item's nodes and their own tests,
+     so unrelated or stale results don't need explaining, and cover every partition the
+     production build reads (e.g. every season). The repo's `CLAUDE.md` gives the flags.
+   - **A query documented for consumers is run, not read.** Run it against the published
+     output and record the result. Checking that it reads correctly is not evidence that it
+     returns the right rows.
 4. Clean up local state in every repo you worked in: remove the item's worktrees
    (`git worktree remove <path>`) and delete its merged local branches
    (`git branch -d <branch>`).
@@ -203,6 +237,9 @@ Split a Feature into stories that are vertical slices, not layers.
    - a **rule change PR** to this repo, when it applies to any work;
    - a **fact in the repo's `CLAUDE.md`**, when it is about one repo.
    Link each PR or commit from the retro comment. A finding that becomes neither says why.
+3. **The retro's changes land within one day of the retro**, as their own PR. They don't
+   wait for the next code change: a rule that waits lets the same finding recur. This is the
+   one exception to *Docs ride with code* (section 1).
 
 **Exit:** retro posted; every finding linked to its change or reason.
 
@@ -267,6 +304,13 @@ Writing acceptance criteria:
   fine (fpl-ingest#22 AC2: `--strict-markers` in `addopts` only warns on pytest 9).
 - **Every edge case is tested.** Each entry in a spec's Edge cases section is either its
   own AC or listed as an example under an existing AC. An edge case never stands alone.
+- **The test tier follows what the test runs against**, set when the AC is written, not
+  corrected at pick-up: a check of one unit in isolation is `unit`; a check that reads
+  several components or built output is `integration`; a check against live
+  infrastructure is `e2e`. The repo's `CLAUDE.md` defines each tier.
+- **Each integration AC names the fixture case that can make it fail.** If the fixture has
+  none, the AC's item adds a synthetic case. A test that can only pass on the fixture
+  proves nothing on the PR path.
 
 ---
 
