@@ -100,6 +100,10 @@ Split a Feature into stories that are vertical slices, not layers.
   a real, shipped change.
 - **After each slice merges, re-check the remaining slices** against what was learned
   before starting the next.
+- **Every Feature names a done-proof consumer query:** one query, written as the consumer
+  would run it against the published output, whose result proves the Feature works end to
+  end. It is a `manual` AC on the item that first publishes, run live after that first
+  publish, with the query and its result recorded on the Feature.
 
 ### Stage 1. Pick up
 
@@ -168,7 +172,10 @@ Split a Feature into stories that are vertical slices, not layers.
 
 **Entry:** stage 3 exited.
 
-1. Title per the repo's convention (its `CLAUDE.md` and recent PRs).
+1. Title per the repo's convention (its `CLAUDE.md` and recent PRs). The body follows the
+   [PR template](.github/pull_request_template.md), including its **Merge danger** section:
+   one-way or two-way door, when a one-way door closes (at merge or at a later event such as
+   the first publish), and the blast radius at merge and later.
 2. Body says `Closes #N`. For an item in another repo, use `Closes gisaf22/<repo>#N`. When
    one item spans several PRs, only the PR expected to merge last says `Closes`; the others
    say `Part of gisaf22/<repo>#N`.
@@ -229,7 +236,10 @@ Split a Feature into stories that are vertical slices, not layers.
    - a **fact in the repo's `CLAUDE.md`**, when it is about one repo.
    Link each PR or commit from the retro comment. A finding that becomes neither says why.
 3. **The retro's changes land within one day of the retro**, as their own PR. They don't
-   wait for the next code change: a rule that waits lets the same finding recur.
+   wait for the next code change: a rule that waits lets the same finding recur. This is an
+   exception to docs-ride-with-code, the practice that a docs or rules change lands with the
+   next code PR rather than as a docs-only PR (gisaf22/fpl-warehouse#123, #143 P2). That
+   practice still holds for every other docs change.
 
 **Exit:** retro posted; every finding linked to its change or reason.
 
