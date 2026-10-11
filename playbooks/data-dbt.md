@@ -13,7 +13,9 @@ Add these to the core checklist when listing open design decisions.
 - **Change over time:** Type 1 (overwrite) or Type 2 (history); what a change should do
   (overwrite, version, or fail the build).
 - **Which attributes belong:** what goes on this model, and what belongs at another grain or
-  in another model.
+  in another model. For each new column, ask whether it varies across the model's full key.
+  If it doesn't, it belongs at a coarser grain: a value that is the same for every player in
+  a capture is a capture attribute, not a player attribute.
 - **Placement:** layer; private or served; reuse of an existing model rather than a new one.
 - **Controls:** fail or warn; no-shrink rules; row-count floors.
 - **Contract strictness:** served models, raw contracts, JSON schemas, manifests, sidecars;
