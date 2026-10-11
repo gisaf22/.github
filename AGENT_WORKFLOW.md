@@ -29,6 +29,8 @@ fields, board commands and other FPL Platform specifics are in the
 - **Fail closed or fail loud.** A failure either stops the work safely or is visible to
   someone who will act on it; never silent.
 - **One source of truth per fact.** A fact lives in one place and others link to it.
+- **Docs ride with code.** A docs change lands in the PR whose code it describes; there are
+  no docs-only PRs. The one exception is a retro's rule changes (stage 6).
 - **Built-in or package before custom.** Use what the platform or an established package
   already does before writing custom logic.
 - **Stay inside Out of scope; ask, don't improvise.** A wrong or ambiguous spec is a stop.
@@ -236,10 +238,8 @@ Split a Feature into stories that are vertical slices, not layers.
    - a **fact in the repo's `CLAUDE.md`**, when it is about one repo.
    Link each PR or commit from the retro comment. A finding that becomes neither says why.
 3. **The retro's changes land within one day of the retro**, as their own PR. They don't
-   wait for the next code change: a rule that waits lets the same finding recur. This is an
-   exception to docs-ride-with-code, the practice that a docs or rules change lands with the
-   next code PR rather than as a docs-only PR (gisaf22/fpl-warehouse#123, #143 P2). That
-   practice still holds for every other docs change.
+   wait for the next code change: a rule that waits lets the same finding recur. This is the
+   one exception to *Docs ride with code* (section 1).
 
 **Exit:** retro posted; every finding linked to its change or reason.
 
