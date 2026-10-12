@@ -30,8 +30,10 @@ fields, board commands and other FPL Platform specifics are in the
   someone who will act on it; never silent.
 - **One source of truth per fact.** A fact lives in one place and others link to it.
 - **Docs ride with code.** A docs change lands in the PR whose code it describes; there are
-  no docs-only PRs. The one exception is a retro's changes (stage 6): rule changes to this
-  repo and facts in a repo's `CLAUDE.md` alike.
+  no docs-only PRs. Two exceptions: a retro's changes (stage 6), rule changes to this repo
+  and facts in a repo's `CLAUDE.md` alike; and a fact in a repo's `CLAUDE.md`, which may
+  land as its own small PR at any time. A README, ADR or schema doc still rides with its
+  code.
 - **Built-in or package before custom.** Use what the platform or an established package
   already does before writing custom logic.
 - **Stay inside Out of scope; ask, don't improvise.** A wrong or ambiguous spec is a stop.
@@ -56,7 +58,7 @@ stop and ask (Stop).
    breaking change for that schema.
 3. List the story's open design decisions against this checklist, then **apply the playbook
    for the domain**, which adds its own items. Include decisions the spec does not mention;
-   an omission is not a decision.
+   an omission is not a decision. A grilling session walks this checklist.
    - **What belongs:** what this change owns, and what belongs to another component.
    - **Missing and edge data:** nulls, absent entities, empty inputs, first and last
      periods, duplicates.
@@ -67,6 +69,14 @@ stop and ask (Stop).
      fails closed or loud. "Nobody would notice" is an open decision. Include the change
      being silently switched off: a missing or default config value that skips a check is a
      failure, not a valid "off" state.
+   - **Where each guard runs:** for every check, which input or output it reads, and
+     whether the failure is still visible there. A check on an output misses what the
+     change collapses or drops on the way, e.g. two identical tied inputs merged into one
+     row.
+   - **Rules, not instances:** state each decision as the rule it follows, with today's
+     instance as an example: "a season with one capture holds one row per fixture (today,
+     2025-26)", not "2025-26 holds one row per fixture". A decision tied to an instance
+     needs an edit for every new case, and passes silently for one until then.
    - **Test tiers and mutations:** which tier each check runs at, and what mutation or
      fixture proves each test can fail.
    - **Infrastructure:** permissions, CI, secrets, inputs.
@@ -155,6 +165,9 @@ Split a Feature into stories that are vertical slices, not layers.
 
 1. Make the tests pass.
 2. Stay inside the item's Out of scope. Anything listed there belongs to another item.
+   **A defect found in shared tooling** (a CI workflow, a macro or script other items use)
+   that no AC of the item covers gets its own issue and its own PR, even when Out of scope
+   doesn't name it. Link the issue from this item's PR; don't fix it there.
 3. If the spec is wrong or ambiguous, stop and ask. Do not improvise around it.
 4. **Commit the implementation before mutation testing.** Revert each mutation with
    `git restore` against that commit, and confirm a clean tree after each. Never run a
@@ -241,7 +254,7 @@ Split a Feature into stories that are vertical slices, not layers.
 3. **The retro's changes land within one day of the retro**, each as its own PR: the rule
    change PR to this repo, and one PR per repo for its `CLAUDE.md` facts. They don't wait
    for the next code change: a rule or fact that waits lets the same finding recur. This is
-   the one exception to *Docs ride with code* (section 1).
+   an exception to *Docs ride with code* (section 1).
 
 **Exit:** retro posted; every finding linked to its change or reason.
 
