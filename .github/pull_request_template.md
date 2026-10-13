@@ -1,4 +1,5 @@
 Closes #
+<!-- Refs # instead when an AC can only run after merge; see AGENT_WORKFLOW.md, stage 4. -->
 
 ## Merge danger
 <!-- Required. See AGENT_WORKFLOW.md, stage 4.
