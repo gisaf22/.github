@@ -30,10 +30,11 @@ fields, board commands and other FPL Platform specifics are in the
   someone who will act on it; never silent.
 - **One source of truth per fact.** A fact lives in one place and others link to it.
 - **Docs ride with code.** A docs change lands in the PR whose code it describes; there are
-  no docs-only PRs. Two exceptions: a retro's changes (stage 6), rule changes to this repo
-  and facts in a repo's `CLAUDE.md` alike; and a fact in a repo's `CLAUDE.md`, which may
-  land as its own small PR at any time. A README, ADR or schema doc still rides with its
-  code.
+  no docs-only PRs. A wrong fact goes in the next code PR that touches its area, or in the
+  in-flight PR if it misleads the current work. The one exception is a retro's changes
+  (stage 6), rule changes to this repo and facts in a repo's `CLAUDE.md` alike, which land
+  on their own within one day. A README, ADR or schema doc still rides with its code
+  ([2a retro R9](https://github.com/gisaf22/fpl-warehouse/issues/163#issuecomment-6148383524)).
 - **Built-in or package before custom.** Use what the platform or an established package
   already does before writing custom logic.
 - **Stay inside Out of scope; ask, don't improvise.** A wrong or ambiguous spec is a stop.
@@ -109,6 +110,10 @@ Split a Feature into stories that are vertical slices, not layers.
   performance or edge cases.
 - **Each slice states the value it delivers on its own.** A story that delivers nothing
   usable alone needs a written reason.
+- **Size stories by their content, not by the last Feature's split.** A small served table
+  gets two stories, the model and serving it, with its docs riding along in them. A
+  docs-only story delivers nothing alone and waits behind the code it describes
+  ([2a retro R4](https://github.com/gisaf22/fpl-warehouse/issues/163#issuecomment-6148383524)).
 - **Plan contract and schema changes across the slices** so that each version bump reflects
   a real, shipped change.
 - **After each slice merges, re-check the remaining slices** against what was learned
@@ -194,7 +199,9 @@ Split a Feature into stories that are vertical slices, not layers.
    the first publish), and the blast radius at merge and later.
 2. Body says `Closes #N`. For an item in another repo, use `Closes gisaf22/<repo>#N`. When
    one item spans several PRs, only the PR expected to merge last says `Closes`; the others
-   say `Part of gisaf22/<repo>#N`.
+   say `Part of gisaf22/<repo>#N`. **An item with ACs that can only run after merge** (after
+   a publish or a deploy) says `Refs #N` instead, so the merge doesn't close it before they
+   run; stage 5 closes it once they pass ([2a retro R8](https://github.com/gisaf22/fpl-warehouse/issues/163#issuecomment-6148383524)).
 3. Post the AC results as a PR comment: pass/fail per AC, with evidence (test output, a
    command and its result, a link). Proposed ACs are listed separately as proposed.
 4. Tick the Definition of Done in the PR body. Mark any item that doesn't apply
@@ -215,7 +222,9 @@ Split a Feature into stories that are vertical slices, not layers.
 
 **Entry:** the human has merged.
 
-1. Confirm the item is closed and its Status is **Done**; set it if the board didn't.
+1. Confirm the item is closed and its Status is **Done**; set it if the board didn't. An
+   item the PR referenced with `Refs` stays open until its post-merge checks pass (point 3);
+   close it then.
 2. Unblock dependents: for each item the closed item was blocking, if it now has no other
    open blockers and its Status is **Blocked**, move it to **Todo**. An item with another
    open blocker stays Blocked.
@@ -254,7 +263,7 @@ Split a Feature into stories that are vertical slices, not layers.
 3. **The retro's changes land within one day of the retro**, each as its own PR: the rule
    change PR to this repo, and one PR per repo for its `CLAUDE.md` facts. They don't wait
    for the next code change: a rule or fact that waits lets the same finding recur. This is
-   an exception to *Docs ride with code* (section 1).
+   the one exception to *Docs ride with code* (section 1).
 
 **Exit:** retro posted; every finding linked to its change or reason.
 
@@ -293,6 +302,9 @@ listing or reading objects, and dry runs. Report the command and what it showed.
 
 When stage 2's pause applies:
 
+- **A prompt waives a pause only by naming it.** An instruction such as "go up to an open
+  PR" does not clear a pause this file requires; the pause still applies unless the prompt
+  names it, e.g. "skip the stage 2 pause" ([2a retro R5](https://github.com/gisaf22/fpl-warehouse/issues/163#issuecomment-6148383524)).
 - **Size XS, every AC manual:** no pause; go straight to stage 3. The PR is the review point.
 - **Size S:** pause only if a design decision was open or new at pick-up (stage 1, point 3),
   even once the human has answered it. Otherwise no pause: commit the failing tests,
