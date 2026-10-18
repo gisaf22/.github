@@ -4,7 +4,7 @@ The one procedure for building a work item, in every `gisaf22` repo. "Pick up #N
 stages 1–5 below for issue #N, in order. Stage 0 runs earlier, when the story is scoped, and
 stage 6 runs when a Feature closes.
 
-The core (sections 1–7) is domain-free. A **domain playbook** adds design checklist items for
+The core (sections 1–8) is domain-free. A **domain playbook** adds design checklist items for
 one kind of work; it never overrides the core. Playbooks:
 
 - [`playbooks/data-dbt.md`](playbooks/data-dbt.md) — data models, captures, dbt.
@@ -43,6 +43,21 @@ fields, board commands and other FPL Platform specifics are in the
 - **Stay inside Out of scope; ask, don't improvise.** A wrong or ambiguous spec is a stop.
 - **The record is the issue, not the session.** See *Durability*.
 - **The human merges.**
+
+### Engineering principles
+
+- **Clean code.** Readable first; clever only when it must be.
+- **Self-documenting names.** A name says what a thing is; no cryptic ids.
+- **Comments explain why, not what.**
+- **No doc sprawl.** One `CARD.md` per decision, docstrings for code, nothing duplicated.
+- **One source of truth.** Every fact, rule and value lives in one place.
+- **Reuse only on a second real use.** No premature abstraction; YAGNI.
+- **Simple structure.** Small, single-purpose modules.
+- **Tests as documentation,** with fixtures built from real samples.
+- **Consistent vocabulary.** Use the repo's glossary terms, and only those.
+- **Fail loudly.** No silent fallbacks.
+- **Delete dead code; don't archive it.** Git is the archive.
+- **Flag staleness.** A file not reachable from a CARD, an import or a test is a deletion candidate.
 
 ## 2. Lifecycle
 
@@ -209,6 +224,8 @@ Split a Feature into stories that are vertical slices, not layers.
    command and its result, a link). Proposed ACs are listed separately as proposed.
 4. Tick the Definition of Done in the PR body. Mark any item that doesn't apply
    "N/A because…".
+   - **Every PR deletes or updates what it supersedes** (code paths, docs, vocabulary) and
+     lists the removals in its body.
    - **A finding the PR defers links an issue before merge.** "Found, not fixed here" with no
      issue is a finding nobody owns.
 5. **Stacked PRs.** When PRs build on each other, each PR's base is the PR below it and its
@@ -341,6 +358,20 @@ Writing acceptance criteria:
 - **Each integration AC names the fixture case that can make it fail.** If the fixture has
   none, the AC's item adds a synthetic case. A test that can only pass on the fixture
   proves nothing on the PR path.
+
+## 8. Retro
+
+Periodic, alongside each Feature's stage 6 retro.
+
+- **Cadence:** at every Epic close, and monthly.
+- **Signals:** issues and PRs labelled `escaped-defect`, `spec-gap`, `rework`, `process-win`.
+- **One retro issue per period**, with these sections:
+  1. **Metrics:** lead time, change failure rate, escaped defects, spec gaps, rework, mutation survivors.
+  2. **What happened:** links.
+  3. **Root cause per signal:** spec | test | code | data | process.
+  4. **Actions:** each one an issue; rule changes as PRs to these workflow docs, saying `Refs <retro issue>`.
+  5. **Last retro's actions:** did the metric move?
+- **Cleanup sweep at Epic close:** remove dead code, orphan files and stale docs (see *Flag staleness*).
 
 ---
 
