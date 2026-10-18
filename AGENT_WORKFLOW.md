@@ -224,8 +224,10 @@ Split a Feature into stories that are vertical slices, not layers.
    command and its result, a link). Proposed ACs are listed separately as proposed.
 4. Tick the Definition of Done in the PR body. Mark any item that doesn't apply
    "N/A because…".
-   - **Every PR deletes or updates what it supersedes** (code paths, docs, vocabulary) and
-     lists the removals in its body.
+   - **Reuse or retire.** Before adding code, docs, references or an ADR, search for existing
+     material that resembles it. Reuse it if it fits; otherwise retire what the new work
+     supersedes (code paths, docs, vocabulary) in the same PR. List reused and retired items
+     in the PR body. Cleanup is scoped to what the work touches — no repo-wide audits.
    - **A finding the PR defers links an issue before merge.** "Found, not fixed here" with no
      issue is a finding nobody owns.
 5. **Stacked PRs.** When PRs build on each other, each PR's base is the PR below it and its
