@@ -22,6 +22,6 @@ Closes #
 - [ ] CI green
 - [ ] Failure path observable
 - [ ] Docs/ADR updated if behaviour or a decision changed
-- [ ] Superseded code paths, docs and vocabulary deleted or updated; removals listed below
+- [ ] Reuse or retire: searched for similar existing material; reused it or retired what this supersedes; reused/retired items listed below
 - [ ] No contract change without a compatibility note
 - [ ] Merge danger stated: door, when it closes, and blast radius
