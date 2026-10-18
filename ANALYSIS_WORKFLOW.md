@@ -11,6 +11,9 @@ Epic/Feature issue; the card links them and never copies them. A superseded doc 
 **Board mapping.** Epic = one decision (one card). Feature = one stage, with a done-check.
 Story = a buildable piece, size ≤ S, with ACs.
 
+**Every gate also requires** the card updated and superseded material removed or archived,
+with no orphan files.
+
 ## Stages
 
 | # | Stage | Question | Must answer | Gate |
