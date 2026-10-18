@@ -9,6 +9,9 @@ one kind of work; it never overrides the core. Playbooks:
 
 - [`playbooks/data-dbt.md`](playbooks/data-dbt.md) — data models, captures, dbt.
 
+An analysis (evaluating a decision before building it) follows
+[`ANALYSIS_WORKFLOW.md`](ANALYSIS_WORKFLOW.md); its pieces are built with this procedure.
+
 Where this file and a repo's `CLAUDE.md` disagree on repo-specific matters (test commands,
 branch naming, PR title style), the repo wins; on the procedure itself, this file wins. Board
 fields, board commands and other FPL Platform specifics are in the
