@@ -34,6 +34,7 @@ with no orphan files.
 - Write the rules before looking at the results.
 - Test on data you did not explore.
 - Build test samples from real data.
+- Results presentation: each experiment's results go in a results notebook — presentation only (all calculations in tested code), every chart/table preceded by a plain-language What / Why / How block, executed fresh and committed with outputs; the CARD carries a short summary and links it.
 
 ## Worked example — Starting XI
 
