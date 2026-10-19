@@ -303,6 +303,14 @@ listing or reading objects, and dry runs. Report the command and what it showed.
 - workflow dispatches that write (anything that captures, builds or deploys);
 - changes to a contract consumers depend on.
 
+**Production writes come only from scheduled GitHub Actions runs (R6).** Never from a local
+machine, a branch dispatch or a PR. A first run of a new capture gets a one-off cron slot
+that a cleanup PR removes afterwards. A dispatch builds and tests without publishing. Local
+checks use fixtures, local paths or read-only S3. Before any command that could write to
+production, confirm it is a scheduled run; if it is not, stop. Forcing a local write past a
+safety flag (an `ALLOW_LOCAL` style override, say) is a live write by another route and
+stays behind the gate above.
+
 ## 4. Reporting
 
 - Lead with the result: what is done, what failed, what is blocked.
@@ -409,6 +417,30 @@ Cite each hit as `gisaf22/<repo>#N`.
 
 The board and all repos are public. No account IDs, ARNs or secrets in any issue, PR or
 comment. Describe the resource ("the capture bucket", "the deploy role") instead.
+
+### Runs, testing and prod
+
+The FPL-specific detail behind the production-writes rule in section 3.
+
+- **The capture bucket** is the S3 bucket the ingest repo writes raw FPL data to, and the
+  warehouse reads from. It is production. Describe it that way in issues and PRs; no
+  account ID or ARN (see Public board).
+- **Credentials come from OIDC.** The AWS role trusts GitHub Actions runs from `main` and
+  from `pull_request` events only. A branch dispatch cannot assume it, and a local machine
+  has no route to it. Do not widen the trust policy to make a test run; that is a
+  permission change and a hard gate.
+- **The credentials last 1 hour.** A job that runs longer loses write access mid-run, so
+  set `timeout-minutes` below 60 on any job that writes, and split the work if it cannot
+  finish inside that.
+- **First run of a new capture: a one-off cron slot.**
+  1. In the PR that adds the capture, add a temporary `schedule` cron entry a few minutes
+     ahead of the planned merge, on the workflow that owns it.
+  2. Merge; the scheduled run on `main` does the first write.
+  3. Check the run's manifest and its healthchecks.io ping (see the repo's `CLAUDE.md`).
+  4. Open a cleanup PR that removes the temporary cron entry. Link it from the issue.
+- **Local checks** use fixtures, local paths (the local storage backend) or read-only S3
+  commands (list and get). A `put`, `cp` to the bucket, or a stage command pointed at it is
+  a write.
 
 ### Board commands
 
